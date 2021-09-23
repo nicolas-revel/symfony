@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +10,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @Vich\Uploadable
  */
 class Post
 {
@@ -39,16 +39,10 @@ class Post
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string|null
      */
     private $imageName;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @var int|null
-     */
-    private $imageSize;
 
     /**
      * @ORM\Column(type="text")
@@ -71,14 +65,13 @@ class Post
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts")
+     * @ORM\Column(type="string", length=255)
      */
-    private $tags;
+    private $slug;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,30 +169,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return Collection|Tag[]
-     */
-    public function getTags(): Collection
-    {
-        return $this->tags;
-    }
-
-    public function addTag(Tag $tag): self
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
-        }
-
-        return $this;
-    }
-
-    public function removeTag(Tag $tag): self
-    {
-        $this->tags->removeElement($tag);
-
-        return $this;
-    }
-
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
@@ -225,14 +194,16 @@ class Post
     {
         return $this->imageName;
     }
-    
-    public function setimageSize(?int $imageSize): void
+
+    public function getSlug(): ?string
     {
-        $this->imageSize = $imageSize;
+        return $this->slug;
     }
 
-    public function getimageSize(): ?int
+    public function setSlug(string $slug): self
     {
-        return $this->imageSize;
+        $this->slug = $slug;
+
+        return $this;
     }
 }

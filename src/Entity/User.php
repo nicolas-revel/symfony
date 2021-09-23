@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -43,24 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $username;
-
-    /** 
-     * @Vich\UploadableField(mapping="user_avatar", fileNameProperty="avatarName", size="avatarSize")
-     * @var File|null
-     */
-    private $avatarFile;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string|null
-     */
-    private $avatarName;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @var int|null
-     */
-    private $avatarSize;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -283,41 +267,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    }
-
-    public function setImageFile(?File $avatarFile = null): void
-    {
-        $this->avatarFile = $avatarFile;
-
-        if (null !== $avatarFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTime();
-        }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->avatarFile;
-    }
-
-    public function setImageName(?string $avatarName): void
-    {
-        $this->avatarName = $avatarName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->avatarName;
-    }
-    
-    public function setavatarSize(?int $avatarSize): void
-    {
-        $this->avatarSize = $avatarSize;
-    }
-
-    public function getavatarSize(): ?int
-    {
-        return $this->avatarSize;
     }
 }
