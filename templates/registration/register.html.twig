@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog - Inscription{% endblock %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+    <h1 class="h3">Vous inscrire</h1>
+
+    {{ form_start(registrationForm) }}
+
+    {{ form_end(registrationForm) }}
+{% endblock %}
