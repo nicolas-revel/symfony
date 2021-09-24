@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Blog - {{ post.title }}
+{% endblock %}
+
+{% form_theme commentform 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+    <h1 class="h2 mb-3">{{ post.title|capitalize }}</h1>
+    <h2 class="h5 mb-4">Article publié le : {{ post.createdAt.format("d/m/Y") }}</h2>
+    <div class="container align-content-center">
+        <p class="align-self-center">{{ post.content }}</p>
+    </div>
+    <h2 class="h5 mb-4">Commentaires :</h2>
+    {% for comment in post.comments %}
+        <div class="card w-100 p-2">
+            <h5 class="card-title">Ecrit par : {{ comment.author }} le {{ comment.createdAt.format("d/m/Y") }}</h5>
+            <div class="card-body">
+                "{{ comment.content }}"
+            </div>
+        </div>
+
+    {% endfor %}
+    {{ form_start(commentform) }}
+    {{ form_end(commentform) }}
+
+
+
+{% endblock %}
+
