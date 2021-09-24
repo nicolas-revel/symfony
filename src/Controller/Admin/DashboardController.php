@@ -42,8 +42,7 @@ class DashboardController extends AbstractDashboardController
             
             MenuItem::section('Blog'),
             MenuItem::linkToCrud('Posts', 'fa fa-newspaper', Post::class),
-            MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class),
+            MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class),
         ];
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

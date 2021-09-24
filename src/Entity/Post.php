@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +33,7 @@ class Post
      */
     private $author;
 
-    /** 
+    /**
      * @Vich\UploadableField(mapping="posts_image", fileNameProperty="imageName", size="imageSize")
      * @var File|null
      */
@@ -169,6 +170,11 @@ class Post
         return $this;
     }
 
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
@@ -180,19 +186,14 @@ class Post
         }
     }
 
-    public function getImageFile(): ?File
+    public function getImageName(): ?string
     {
-        return $this->imageFile;
+        return $this->imageName;
     }
 
     public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
     }
 
     public function getSlug(): ?string
